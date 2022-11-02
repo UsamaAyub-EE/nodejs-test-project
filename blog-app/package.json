@@ -1,0 +1,19 @@
+{
+  "name": "blog-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "start:dev": "NODE_ENV='development' node server.js",
+    "build": "next build && next export",
+    "start": "next start"
+  },
+  "dependencies": {
+    "bootstrap": "^5.2.2",
+    "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6",
+    "next": "13.0.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  }
+}
