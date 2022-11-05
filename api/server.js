@@ -62,12 +62,15 @@ app.post('/api/post', (req, res) => {
   });
 });
 
-app.delete('/api/posts', (req, res) => {
-  const title = req.body.title;
+app.delete('/api/posts/:id', (req, res) => {
+  const id = req.params.id;
 
-  Post.deleteOne({ tilte: title }, (err, post) => {
+  console.log(id);
+  Post.deleteOne({ _id: id }, (err, post) => {
     if (err) {
       res.send(err);
+    } else {
+      res.json('post deleted');
     }
   });
 });

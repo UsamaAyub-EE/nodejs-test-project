@@ -11,3 +11,12 @@ export async function createPost(data) {
   });
   return await response.json();
 }
+
+export async function deletePost(postID) {
+  console.log('delete post with ID', postID);
+  const response = await fetch(`/api/posts/${postID}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  });
+  return await response.json();
+}

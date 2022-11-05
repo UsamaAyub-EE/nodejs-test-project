@@ -1,71 +1,72 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Header } from './Header'
-import { Posts } from './Posts'
-import { DisplayBoard } from './DisplayBoard'
-import CreatePost from './CreatePost'
-import { getAllPosts, createPost } from '../services/PostService'
+import { Header } from './Header';
+import { Posts } from './Posts';
+import { DisplayBoard } from './DisplayBoard';
+import CreatePost from './CreatePost';
+import { getAllPosts, createPost, deletePost } from '../services/PostService';
 
 class App extends Component {
-
   state = {
     post: {},
     posts: [],
-    numberOfPosts: 0
-  }
+    numberOfPosts: 0,
+  };
 
-  createPost = (e) => {
-      createPost(this.state.post)
-        .then(response => {
-          console.log(response);
-          this.setState({numberOfPosts: this.state.numberOfPosts + 1})
-      });
-  }
+  createPost = e => {
+    createPost(this.state.post).then(response => {
+      console.log(response);
+      this.setState({ numberOfPosts: this.state.numberOfPosts + 1 });
+    });
+  };
 
   getAllPosts = () => {
-    getAllPosts()
-      .then(posts => {
-        console.log(posts)
-        this.setState({posts: posts, numberOfPosts: posts.length})
-      });
-  }
+    getAllPosts().then(posts => {
+      console.log(posts);
+      this.setState({ posts: posts, numberOfPosts: posts.length });
+    });
+  };
 
-  onChangeForm = (e) => {
-      let post = this.state.post
-      if (e.target.name === 'title') {
-          post.title = e.target.value;
-      } else if (e.target.name === 'content') {
-          post.content = e.target.value;
-      }
-      this.setState({post})
-  }
+  deletePost = postID => {
+    deletePost(postID).then(response => {
+      console.log(response);
+      this.setState({ numberOfPosts: this.state.numberOfPosts - 1 });
+    });
+  };
+
+  onChangeForm = e => {
+    let post = this.state.post;
+    if (e.target.name === 'title') {
+      post.title = e.target.value;
+    } else if (e.target.name === 'content') {
+      post.content = e.target.value;
+    }
+    this.setState({ post });
+  };
 
   render() {
-
     return (
-      <div className="App">
+      <div className='App'>
         <Header></Header>
-        <div className="container mrgnbtm">
-          <div className="row">
-            <div className="col-md-8">
-                <CreatePost
-                  post={this.state.post}
-                  onChangeForm={this.onChangeForm}
-                  createPost={this.createPost}
-                  >
-                </CreatePost>
+        <div className='container mrgnbtm'>
+          <div className='row'>
+            <div className='col-md-8'>
+              <CreatePost
+                post={this.state.post}
+                onChangeForm={this.onChangeForm}
+                createPost={this.createPost}
+              ></CreatePost>
             </div>
-            <div className="col-md-4">
-                <DisplayBoard
-                  numberOfPosts={this.state.numberOfPosts}
-                  getAllPosts={this.getAllPosts}
-                >
-                </DisplayBoard>
+            <div className='col-md-4'>
+              <DisplayBoard
+                numberOfPosts={this.state.numberOfPosts}
+                getAllPosts={this.getAllPosts}
+              ></DisplayBoard>
             </div>
           </div>
         </div>
-        <div className="row mrgnbtm">
-          <Posts posts={this.state.posts}></Posts>
+        <div className='row mrgnbtm'>
+          <Posts posts={this.state.posts} deletePost={this.deletePost}></Posts>
         </div>
       </div>
     );
