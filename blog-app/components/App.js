@@ -15,6 +15,7 @@ class App extends Component {
   state = {
     post: {},
     posts: [],
+    postID: null,
     numberOfPosts: 0,
     edit: false,
   };
@@ -22,7 +23,7 @@ class App extends Component {
   createPost = e => {
     if (this.state.edit) {
       this.setState({ edit: false });
-      updatePost(this.state.post, this.state.post._id).then(response => {
+      updatePost(this.state.post, this.state.postID).then(response => {
         console.log(response);
       });
       return;
@@ -58,13 +59,14 @@ class App extends Component {
   };
 
   onEditClick = post => {
-    this.setState({ edit: true });
-    this.setState({ post });
+    this.setState({ edit: true, postID: post._id });
+    let tempPost = { title: post.title, content: post.content };
+    this.setState({ post: tempPost });
   };
 
   onCancelClick = () => {
     this.setState({ edit: false });
-    this.setState({ post: {} });
+    this.setState({ post: { title: '', content: '' } });
   };
 
   render() {
