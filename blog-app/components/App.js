@@ -4,16 +4,29 @@ import { Header } from './Header';
 import { Posts } from './Posts';
 import { DisplayBoard } from './DisplayBoard';
 import CreatePost from './CreatePost';
-import { getAllPosts, createPost, deletePost } from '../services/PostService';
+import {
+  getAllPosts,
+  createPost,
+  deletePost,
+  updatePost,
+} from '../services/PostService';
 
 class App extends Component {
   state = {
     post: {},
     posts: [],
     numberOfPosts: 0,
+    edit: false,
   };
 
   createPost = e => {
+    if (this.state.edit) {
+      this.setState({ edit: false });
+      updatePost(this.state.post, this.state.post._id).then(response => {
+        console.log(response);
+      });
+      return;
+    }
     createPost(this.state.post).then(response => {
       console.log(response);
       this.setState({ numberOfPosts: this.state.numberOfPosts + 1 });
@@ -44,6 +57,16 @@ class App extends Component {
     this.setState({ post });
   };
 
+  onEditClick = post => {
+    this.setState({ edit: true });
+    this.setState({ post });
+  };
+
+  onCancelClick = () => {
+    this.setState({ edit: false });
+    this.setState({ post: {} });
+  };
+
   render() {
     return (
       <div className='App'>
@@ -55,6 +78,8 @@ class App extends Component {
                 post={this.state.post}
                 onChangeForm={this.onChangeForm}
                 createPost={this.createPost}
+                edit={this.state.edit}
+                onCancelClick={this.onCancelClick}
               ></CreatePost>
             </div>
             <div className='col-md-4'>
@@ -65,8 +90,13 @@ class App extends Component {
             </div>
           </div>
         </div>
-        <div className='row mrgnbtm'>
-          <Posts posts={this.state.posts} deletePost={this.deletePost}></Posts>
+        <div className='container mrgnbtm'>
+          <Posts
+            posts={this.state.posts}
+            deletePost={this.deletePost}
+            onEditClick={this.onEditClick}
+            onCancelClick={this.onCancelClick}
+          ></Posts>
         </div>
       </div>
     );

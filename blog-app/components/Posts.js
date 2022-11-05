@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Posts = ({ posts, deletePost }) => {
+export const Posts = ({ posts, deletePost, onEditClick }) => {
   console.log('posts length:::', posts.length);
   if (posts.length === 0) return null;
 
@@ -9,8 +9,8 @@ export const Posts = ({ posts, deletePost }) => {
       <div>
         <h2>{post.title}</h2>
         <h4>{post.content}</h4>
-        <h4>{post._id}</h4>
         <button type="button" onClick= {(e) => deletePost(post._id)} className="btn btn-danger">Delete</button>
+        <button type="button" onClick= {(e) => onEditClick(post)} className="btn btn-danger">Edit</button>
       </div>
     );
   };

@@ -51,8 +51,6 @@ app.post('/api/post', (req, res) => {
     content: reqPost.content ? reqPost.content : 'Blank',
   });
 
-  console.log(reqPost);
-
   post.save(err => {
     if (err) {
       res.send(err);
@@ -63,14 +61,22 @@ app.post('/api/post', (req, res) => {
 });
 
 app.delete('/api/posts/:id', (req, res) => {
-  const id = req.params.id;
-
-  console.log(id);
-  Post.deleteOne({ _id: id }, (err, post) => {
+  Post.deleteOne({ _id: req.params.id }, (err, post) => {
     if (err) {
       res.send(err);
     } else {
       res.json('post deleted');
+    }
+  });
+});
+
+app.put('/api/posts/:id', (req, res) => {
+  console.log(req.params.id, req.body.post);
+  Post.findByIdAndUpdate(req.params.id, {title: req.body.post.title, content: req.body.post.content}, (err, post) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json('post updated');
     }
   });
 });
