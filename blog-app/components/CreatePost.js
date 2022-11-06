@@ -10,12 +10,12 @@ const CreatePost = ({
   return (
     <div className='container'>
       <div className='row'>
-        <div className='col-md-7 mrgnbtm'>
+        <div className='col-md-7 mrgntop'>
           <h2>{edit ? 'Edit' : 'Create'} Post</h2>
           <form>
             <div className='row'>
-              <div className='form-group col-md-6'>
-                <label htmlFor='exampleInputEmail1'>Title</label>
+              <div className='form-group col-md-12'>
+                <label htmlFor='exampleInputEmail1' class="col-sm-2 col-form-label col-form-label-lg">Title</label>
                 <input
                   type='text'
                   onChange={e => onChangeForm(e)}
@@ -30,8 +30,8 @@ const CreatePost = ({
             </div>
             <div className='row'>
               <div className='form-group col-md-12'>
-                <label htmlFor='exampleInputEmail1'>Content</label>
-                <input
+                <label htmlFor='exampleInputEmail1' class="col-sm-2 col-form-label col-form-label-lg">Content</label>
+                <textarea
                   type='text'
                   onChange={e => onChangeForm(e)}
                   className='form-control'
@@ -39,6 +39,7 @@ const CreatePost = ({
                   id='content'
                   aria-describedby='emailHelp'
                   placeholder='Content'
+                  rows={3}
                   value={post.content}
                 />
               </div>
@@ -46,14 +47,14 @@ const CreatePost = ({
             <button
               type='button'
               onClick={e => createPost()}
-              className='btn btn-danger'
+              className='btn btn-primary margin-btn'
             >
               {edit ? 'Update' : 'Create'}
             </button>
             {edit && (<button
               type='button'
               onClick={e => onCancelClick()}
-              className='btn btn-danger'
+              className='btn btn-danger margin-btn'
             >
               Cancel
             </button>)}

@@ -26,12 +26,16 @@ class App extends Component {
       updatePost(this.state.post, this.state.postID).then(response => {
         console.log(response);
       });
+      this.getAllPosts();
+      this.setState({ post: { title: '', content: '' } });
       return;
     }
     createPost(this.state.post).then(response => {
       console.log(response);
       this.setState({ numberOfPosts: this.state.numberOfPosts + 1 });
     });
+    this.setState({ post: { title: '', content: '' } });
+    this.getAllPosts();
   };
 
   getAllPosts = () => {
@@ -46,6 +50,7 @@ class App extends Component {
       console.log(response);
       this.setState({ numberOfPosts: this.state.numberOfPosts - 1 });
     });
+    this.getAllPosts();
   };
 
   onChangeForm = e => {
@@ -73,7 +78,7 @@ class App extends Component {
     return (
       <div className='App'>
         <Header></Header>
-        <div className='container mrgnbtm'>
+        <div className='container mrgntop'>
           <div className='row'>
             <div className='col-md-8'>
               <CreatePost

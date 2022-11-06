@@ -7,10 +7,10 @@ export const Posts = ({ posts, deletePost, onEditClick }) => {
   const PostRow = (post, index) => {
     return (
       <div>
-        <h2>{post.title}</h2>
+        <h2 style={{color: 'rgb(25, 103, 25)', fontWeight: 'bold'}} >{post.title}</h2>
         <h4>{post.content}</h4>
-        <button type="button" onClick= {(e) => deletePost(post._id)} className="btn btn-danger">Delete</button>
-        <button type="button" onClick= {(e) => onEditClick(post)} className="btn btn-danger">Edit</button>
+        <button type="button" onClick= {(e) => deletePost(post._id)} className="btn btn-danger margin-btn">Delete</button>
+        <button type="button" onClick= {(e) => onEditClick(post)} className="btn btn-warning margin-btn">Edit</button>
       </div>
     );
   };
@@ -19,7 +19,9 @@ export const Posts = ({ posts, deletePost, onEditClick }) => {
 
   return (
     <div className='container'>
-      <h1>Posts</h1>
+      <hr class="hr" />
+      <h1 className='heading-posts' >Posts</h1>
+      <hr class="hr" />
       <div>{postTable}</div>
     </div>
   );
