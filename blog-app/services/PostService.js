@@ -1,30 +1,35 @@
+import useFetch from './useFetch';
 export async function getAllPosts() {
-  const response = await fetch('/api/posts');
-  return await response.json();
+  let url = `/api/posts`;
+  let options = { method: 'GET' };
+  return useFetch(url, options);
 }
 
 export async function createPost(data) {
-  const response = await fetch(`/api/post`, {
+  let url = `/api/post`;
+  let options = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ post: data }),
-  });
-  return await response.json();
+  };
+  return useFetch(url, options);
 }
 
 export async function deletePost(postID) {
-  const response = await fetch(`/api/posts/${postID}`, {
+  let url = `/api/posts/${postID}`;
+  let options = {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
-  });
-  return await response.json();
+  };
+  return useFetch(url, options);
 }
 
 export async function updatePost(data, postID) {
-  const response = await fetch(`/api/posts/${postID}`, {
+  let url = `/api/posts/${postID}`;
+  let options = {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ post: data }),
-  });
-  return await response.json();
+  };
+  return useFetch(url, options);
 }
