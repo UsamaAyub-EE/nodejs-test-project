@@ -1,11 +1,11 @@
 import useFetch from './useFetch';
-export async function getAllPosts() {
+export async function fetchPosts() {
   let url = `/api/posts`;
   let options = { method: 'GET' };
   return useFetch(url, options);
 }
 
-export async function createPost(data) {
+export async function submitPost(data) {
   let url = `/api/post`;
   let options = {
     method: 'POST',
@@ -15,7 +15,7 @@ export async function createPost(data) {
   return useFetch(url, options);
 }
 
-export async function deletePost(postID) {
+export async function destroyPost(postID) {
   let url = `/api/posts/${postID}`;
   let options = {
     method: 'DELETE',

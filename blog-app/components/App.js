@@ -1,113 +1,106 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { createContext, useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Header } from './Header';
 import { Posts } from './Posts';
 import { DisplayBoard } from './DisplayBoard';
 import CreatePost from './CreatePost';
 import {
-  getAllPosts,
-  createPost,
-  deletePost,
+  fetchPosts,
+  submitPost,
+  destroyPost,
   updatePost,
 } from '../services/PostService';
 
-class App extends Component {
-  state = {
-    post: {},
-    posts: [],
-    postID: null,
-    numberOfPosts: 0,
-    edit: false,
-  };
+export const appContext = createContext();
 
-  createPost = e => {
-    if (this.state.edit) {
-      this.setState({ edit: false });
-      updatePost(this.state.post, this.state.postID).then(response => {
+const App = () => {
+  const [posts, setPosts] = useState([]);
+  const [state, setState] = useState({
+    post: { title: '', content: '' },
+    postID: null,
+    edit: false,
+  });
+
+  const createPost = e => {
+    if (state.edit) {
+      updatePost(state.post, state.postID).then(response => {
         console.log(response);
       });
-      this.getAllPosts();
-      this.setState({ post: { title: '', content: '' } });
-      return;
+    } else {
+      submitPost(state.post).then(response => {
+        console.log(response);
+      });
     }
-    createPost(this.state.post).then(response => {
-      console.log(response);
-      this.setState({ numberOfPosts: this.state.numberOfPosts + 1 });
+    getAllPosts();
+    setState({
+      ...state,
+      post: { title: '', content: '' },
+      edit: false,
     });
-    this.setState({ post: { title: '', content: '' } });
-    this.getAllPosts();
   };
 
-  getAllPosts = () => {
-    getAllPosts().then(posts => {
+  const getAllPosts = () => {
+    fetchPosts().then(posts => {
       console.log(posts);
-      this.setState({ posts: posts, numberOfPosts: posts.length });
+      setPosts(posts);
     });
   };
 
-  deletePost = postID => {
-    deletePost(postID).then(response => {
+  const deletePost = postID => {
+    destroyPost(postID).then(response => {
       console.log(response);
-      this.setState({ numberOfPosts: this.state.numberOfPosts - 1 });
+      getAllPosts();
     });
-    this.getAllPosts();
   };
 
-  onChangeForm = e => {
-    let post = this.state.post;
+  const onChangeForm = e => {
+    let post = state.post;
     if (e.target.name === 'title') {
       post.title = e.target.value;
     } else if (e.target.name === 'content') {
       post.content = e.target.value;
     }
-    this.setState({ post });
+    setState({ ...state, post: post });
   };
 
-  onEditClick = post => {
-    this.setState({ edit: true, postID: post._id });
+  const onEditClick = post => {
     let tempPost = { title: post.title, content: post.content };
-    this.setState({ post: tempPost });
+    setState({ post: tempPost, edit: true, postID: post._id });
   };
 
-  onCancelClick = () => {
-    this.setState({ edit: false });
-    this.setState({ post: { title: '', content: '' } });
+  const onCancelClick = () => {
+    setState({ ...state, post: { title: '', content: '' }, edit: false });
   };
 
-  render() {
-    return (
+  return (
+    <appContext.Provider value={{...state, posts: posts}}>
       <div className='App'>
         <Header></Header>
         <div className='container mrgntop'>
           <div className='row'>
             <div className='col-md-8'>
               <CreatePost
-                post={this.state.post}
-                onChangeForm={this.onChangeForm}
-                createPost={this.createPost}
-                edit={this.state.edit}
-                onCancelClick={this.onCancelClick}
+                onChangeForm={onChangeForm}
+                createPost={createPost}
+                onCancelClick={onCancelClick}
               ></CreatePost>
             </div>
             <div className='col-md-4'>
-              <DisplayBoard
-                numberOfPosts={this.state.numberOfPosts}
-                getAllPosts={this.getAllPosts}
-              ></DisplayBoard>
+              <DisplayBoard getAllPosts={getAllPosts}></DisplayBoard>
             </div>
           </div>
         </div>
         <div className='container mrgnbtm'>
           <Posts
-            posts={this.state.posts}
-            deletePost={this.deletePost}
-            onEditClick={this.onEditClick}
-            onCancelClick={this.onCancelClick}
+            deletePost={deletePost}
+            onEditClick={onEditClick}
+            onCancelClick={onCancelClick}
           ></Posts>
         </div>
       </div>
-    );
-  }
-}
+    </appContext.Provider>
+  );
+};
 
 export default App;

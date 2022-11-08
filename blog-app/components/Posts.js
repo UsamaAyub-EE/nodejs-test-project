@@ -1,8 +1,10 @@
-import React from 'react';
+import {React, useContext} from 'react';
+import { appContext } from './App';
 
-export const Posts = ({ posts, deletePost, onEditClick }) => {
-  console.log('posts length:::', posts.length);
-  if (posts.length === 0) return null;
+export const Posts = ({ deletePost, onEditClick }) => {
+  const state = useContext(appContext);
+  console.log('state.posts length:::', state.posts.length);
+  if (state.posts.length === 0) return null;
 
   const PostRow = (post, index) => {
     return (
@@ -15,7 +17,7 @@ export const Posts = ({ posts, deletePost, onEditClick }) => {
     );
   };
 
-  const postTable = posts.map((post, index) => PostRow(post, index));
+  const postTable = state.posts.map((post, index) => PostRow(post, index));
 
   return (
     <div className='container'>
