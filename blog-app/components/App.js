@@ -69,9 +69,9 @@ const App = () => {
     setState({ post: tempPost, edit: true, postID: post._id });
   };
 
-  const onCancelClick = () => {
+  const onCancelClick = useCallback(() => {
     setState({ ...state, post: { title: '', content: '' }, edit: false });
-  };
+  });
 
   return (
     <appContext.Provider value={{...state, posts: posts}}>
