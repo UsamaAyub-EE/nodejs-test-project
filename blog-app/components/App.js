@@ -1,5 +1,5 @@
 import React from 'react';
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Header } from './Header';
 import { Posts } from './Posts';
